@@ -1,5 +1,5 @@
-{{ config(materialized='table') }}
-
+--{{ config(materialized='table') }}
+--
 WITH flights_one_month AS (
     SELECT * 
     FROM {{source('flights_data', 'flights')}}
