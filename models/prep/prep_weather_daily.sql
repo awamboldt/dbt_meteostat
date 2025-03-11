@@ -9,7 +9,7 @@ add_features AS (
 		, DATE_PART('year', date) AS date_year 		-- number of year
 		, EXTRACT(WEEK FROM date) AS cw 			-- number of the week of year
 		, TO_CHAR(date, 'FMmonth') AS month_name	-- name of the month
-		, TO_CHAR(date, FMday) AS weekday 		-- name of the weekday
+		, TO_CHAR(date, 'FMday') AS weekday 		-- name of the weekday
     FROM daily_data 
 ),
 add_more_features AS (
