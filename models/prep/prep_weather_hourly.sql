@@ -24,20 +24,6 @@ add_more_features AS (
 			WHEN time BETWEEN '17:01:00' AND '20:00:00' THEN 'evening'
 		END) AS day_part
 		, (CASE 
-			WHEN date_month IN (0) THEN 'january'
-			WHEN date_month IN (1) THEN 'february'
-            WHEN date_month IN (2) THEN 'march'
-            WHEN date_month IN (3) THEN 'april'
-            WHEN date_month IN (4) THEN 'may'
-			WHEN date_month IN (5) THEN 'june'
-            WHEN date_month IN (6) THEN 'july'
-            WHEN date_month IN (7) THEN 'august'
-            WHEN date_month IN (8) THEN 'september'
-			WHEN date_month IN (9) THEN 'october'
-            WHEN date_month IN (10) THEN 'november'
-            WHEN date_month IN (11) THEN 'december'
-		END) AS month_name
-		, (CASE 
 			WHEN weekday IN (0) THEN 'sunday'
 			WHEN weekday IN (1) THEN 'monday'
             WHEN weekday IN (2) THEN 'tuesday'
