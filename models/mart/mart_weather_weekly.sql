@@ -14,5 +14,8 @@ SELECT
 	, AVG(avg_pressure_hpa) AS weekly_avg_pressure_hpa
 	, SUM(sun_minutes) AS weekly_total_sun_minutes
 	, cw AS current_week
+    , MODE() WITHIN GROUP (ORDER BY date_month) AS month
+    , MODE() WITHIN GROUP (ORDER BY month_name) AS month_name
+    , MODE() WITHIN GROUP (ORDER BY season) AS season
 FROM {{ref('prep_weather_daily')}}
 GROUP BY (cw, date_year, airport_code, station_id, season)
