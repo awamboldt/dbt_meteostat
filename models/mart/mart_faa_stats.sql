@@ -67,4 +67,4 @@ SELECT
 	,pa.city
 	,pa.country
 FROM merged_data AS md
-LEFT JOIN prep_airports AS pa ON pa.faa = md.airport;
+LEFT JOIN prep_airports AS pa ON pa.faa = md.airport
