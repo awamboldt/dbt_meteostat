@@ -62,9 +62,9 @@ merged_data AS
 	LEFT JOIN arrival_data AS a ON a.dest=d.origin
 	LEFT JOIN actually_arrived AS aa ON aa.dest=d.origin)
 SELECT 
-	md.*
-	,pa.name
+	pa.name
 	,pa.city
+	,md.*
 	,pa.country
 FROM merged_data AS md
 LEFT JOIN prep_airports AS pa ON pa.faa = md.airport
