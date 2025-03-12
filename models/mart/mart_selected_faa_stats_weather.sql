@@ -12,6 +12,8 @@ WITH departure_data AS
 		, COUNT(diverted) AS departure_diverted
 		--(optional) how many unique airplanes travelled on average
 		, COUNT(DISTINCT tail_number) AS unique_departure_planes
+        --(optional) how many unique airlines
+		, COUNT(DISTINCT airline) AS departure_airlines
 	FROM {{ref('prep_flights')}}
 	WHERE origin IN ('LAX', 'JFK', 'MIA')
 	GROUP BY origin, flight_date),
@@ -37,6 +39,8 @@ arrival_data AS
 		, COUNT(diverted) AS arrival_diverted
 		--(optional) how many unique airplanes travelled on average
 		, COUNT(DISTINCT tail_number) AS unique_arrival_planes
+        --(optional) how many unique airlines
+		, COUNT(DISTINCT airline) AS arrival_airlines
 	FROM {{ref('prep_flights')}}
 	WHERE dest IN ('LAX', 'JFK', 'MIA')
 	GROUP BY dest, flight_date),
@@ -62,8 +66,10 @@ merged_data AS
 		, (departure_diverted + arrival_diverted) AS total_diversions
 		--how many flights actually occured in total (departures & arrivals)
 		, (da.actual_departed + aa.actual_arrived) AS total_actual_flights
-		--(optional) how many unique airplanes travelled on average
-		, (d.unique_departure_planes + a.unique_arrival_planes) AS unique_planes
+	    --(optional) how many unique airplanes travelled on average
+	    , (d.unique_departure_planes + a.unique_arrival_planes)::NUMERIC/2 AS unique_planes
+	    --(optional) how many unique airlines
+	    , (d.departure_airlines+a.arrival_airlines)::NUMERIC/2 AS unique_airlines
 	FROM departure_data AS d
 	LEFT JOIN actually_departed AS da ON (da.origin=d.origin AND da.flight_date=d.flight_date)
 	LEFT JOIN arrival_data AS a ON (a.dest=d.origin and a.flight_date=d.flight_date)
@@ -116,6 +122,8 @@ SELECT
 	, g.total_actual_flights
 	--(optional) how many unique airplanes travelled on average
 	, g.unique_planes
+    --(optional) how many unique airlines
+	, g.unique_airlines
 	--daily min temperature
 	, w.min_temp_c
 	--daily max temperature

@@ -11,6 +11,8 @@ WITH departure_data AS
 		, COUNT(diverted) AS departure_diverted
 		--(optional) how many unique airplanes travelled on average
 		, COUNT(DISTINCT tail_number) AS unique_departure_planes
+		--(optional) how many unique airlines
+		, COUNT(DISTINCT airline) AS departure_airlines
 	FROM {{ref('prep_flights')}}
 	GROUP BY origin),
 actually_departed AS
@@ -33,6 +35,8 @@ arrival_data AS
 		, COUNT(diverted) AS arrival_diverted
 		--(optional) how many unique airplanes travelled on average
 		, COUNT(DISTINCT tail_number) AS unique_arrival_planes
+		--(optional) how many unique airlines
+		, COUNT(DISTINCT airline) AS arrival_airlines
 	FROM {{ref('prep_flights')}}
 	GROUP BY dest),
 actually_arrived AS
@@ -56,7 +60,9 @@ merged_data AS
 	--how many flights actually occured in total (departures & arrivals)
 	, (da.actual_departed + aa.actual_arrived) AS total_actual_flights
 	--(optional) how many unique airplanes travelled on average
-	, (d.unique_departure_planes + a.unique_arrival_planes) AS unique_planes
+	, (d.unique_departure_planes + a.unique_arrival_planes)::NUMERIC/2 AS unique_planes
+	--(optional) how many unique airlines
+	, (d.departure_airlines+a.arrival_airlines)::NUMERIC/2 AS unique_airlines
 	FROM departure_data AS d
 	LEFT JOIN actually_departed AS da ON da.origin=d.origin
 	LEFT JOIN arrival_data AS a ON a.dest=d.origin
