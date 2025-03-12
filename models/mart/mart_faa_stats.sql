@@ -11,13 +11,13 @@ WITH departure_data AS
 		, COUNT(diverted) AS departure_diverted
 		--(optional) how many unique airplanes travelled on average
 		, COUNT(DISTINCT tail_number) AS unique_departure_planes
-	FROM {{ref(prep_flights)}}
+	FROM {{ref('prep_flights')}}
 	GROUP BY origin),
 actually_departed AS
 	(SELECT 
 	origin
 	, COUNT(*) AS actual_departed
-	FROM {{ref(prep_flights)}}
+	FROM {{ref('prep_flights')}}
 	WHERE (cancelled = 0) AND actual_elapsed_time IS NOT NULL
 	GROUP BY origin),
 arrival_data AS
@@ -33,13 +33,13 @@ arrival_data AS
 		, COUNT(diverted) AS arrival_diverted
 		--(optional) how many unique airplanes travelled on average
 		, COUNT(DISTINCT tail_number) AS unique_arrival_planes
-	FROM {{ref(prep_flights)}}
+	FROM {{ref('prep_flights')}}
 	GROUP BY dest),
 actually_arrived AS
 	(SELECT 
 	dest
 	, COUNT(*) AS actual_arrived
-	FROM {{ref(prep_flights)}}
+	FROM {{ref('prep_flights')}}
 	WHERE (cancelled = 0) AND actual_elapsed_time IS NOT NULL
 	GROUP BY dest),
 merged_data AS
