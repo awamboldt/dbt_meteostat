@@ -1,7 +1,8 @@
 SELECT
 	airport_code
 	, station_id
-	,season
+	, date_year
+    , season
 	, AVG(avg_temp_c) AS weekly_avg_temp
 	, MIN(min_temp_c) AS weekly_min_temp
 	, MAX(max_temp_c) AS weekly_max_temp
