@@ -14,6 +14,5 @@ SELECT
 	, AVG(avg_pressure_hpa) AS weekly_avg_pressure_hpa
 	, SUM(sun_minutes) AS weekly_total_sun_minutes
 	, cw AS current_week
--- consider whether the metric should be Average, Maximum, Minimum, Sum or [Mode](https://wiki.postgresql.org/wiki/Aggregate_Mode)
 FROM {{ref('prep_weather_daily')}}
-GROUP BY (cw, airport_code, station_id, season)
+GROUP BY (cw, date_year, airport_code, station_id, season)
